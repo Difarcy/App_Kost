@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/icon/kostku.ico') ?>">
+    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/icon/vstock.ico') ?>">
 
     <!-- CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/auth.css') ?>">

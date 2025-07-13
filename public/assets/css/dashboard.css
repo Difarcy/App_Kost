@@ -101,16 +101,19 @@ body {
 }
 
 .widget-blue {
-  background: linear-gradient(135deg, #4eaaff 60%, #3b82f6 100%);
+  background: linear-gradient(135deg, #ece9e6 60%, #ffffff 100%); /* silver */
+  color: #444;
 }
 .widget-pink {
-  background: linear-gradient(135deg, #ff7eb3 60%, #ff5e7e 100%);
+  background: linear-gradient(135deg, #a9744f 60%, #6d4c41 100%); /* coklat */
 }
 .widget-green {
-  background: linear-gradient(135deg, #3be8b0 60%, #2dd4bf 100%);
+  background: linear-gradient(135deg, #fff6d6 60%, #ffe0b2 100%); /* cream */
+  color: #6d4c00;
 }
 .widget-yellow {
-  background: linear-gradient(135deg, #ffe082 60%, #fbc02d 100%);
+  background: linear-gradient(135deg, #ffd700 60%, #ffb300 100%); /* gold */
+  color: #6d4c00;
 }
 
 .widget-footer {

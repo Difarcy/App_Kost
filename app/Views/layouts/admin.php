@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title><?= $this->renderSection('title') ?> | VStock</title>
+    <title><?= $this->renderSection('title') ?> | KostKu</title>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/icon/vstock.ico') ?>">
+    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/icon/kostku.ico') ?>">
 
     <!-- CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/sidebar.css') ?>">
@@ -42,7 +42,7 @@
 <body>
     <div class="layout-root">
         <!-- Sidebar -->
-        <?= $this->include('partials/sidebar_admin') ?>
+        <?= $this->include('partials/sidebar') ?>
 
         <!-- Header -->
         <?= $this->include('partials/header') ?>

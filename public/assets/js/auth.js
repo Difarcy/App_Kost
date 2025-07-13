@@ -1,5 +1,5 @@
 // =============================
-// AUTH LOGIN PAGE SCRIPTS (VStock)
+// AUTH LOGIN PAGE SCRIPTS
 // =============================
 
 // Toggle show/hide password pada input password
