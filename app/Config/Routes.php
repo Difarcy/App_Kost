@@ -5,6 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'Beranda::index');
 $routes->get('/admin', 'Dashboard::index');
+$routes->get('login', 'Auth::login');
+$routes->post('login', 'Auth::doLogin');
 
 // Resource routes untuk admin CRUD
 define('ADMIN', 'admin');

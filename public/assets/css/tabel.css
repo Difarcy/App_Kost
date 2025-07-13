@@ -1,0 +1,68 @@
+/* Table Styles */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f8f8f8;
+    font-size: 14px;
+    border: none;
+}
+
+.data-table thead {
+    background: #e0e0e0;
+}
+
+.data-table th {
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 600;
+    color: #000000;
+    font-size: 14px;
+    border: 1px solid #bfc9d1;
+    background: #e0e0e0;
+}
+
+.data-table tbody tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #bfc9d1;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.data-table td {
+    padding: 10px 8px;
+    vertical-align: middle;
+    color: #000000;
+    border: 1px solid #bfc9d1;
+    text-align: center;
+    background: #f8f8f8;
+}
+
+.lihat-semua-bar {
+    text-align: center;
+    margin-top: 10px;
+}
+  
+.lihat-semua-link {
+    text-decoration: none;
+    color: #495057;
+    font-size: 0.9rem;
+}
+  
+.lihat-semua-link:hover {
+    text-decoration: underline;
+    color: #495057;
+}  
+
+/* Table Actions */
+.table-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}

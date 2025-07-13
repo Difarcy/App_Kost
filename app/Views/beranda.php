@@ -14,14 +14,13 @@
             <span class="logo-text">KostKu</span>
         </div>
         <nav class="nav-menu">
-            <a href="#home" class="active">Home</a>
+            <a href="#home">Home</a>
             <a href="#kamar">Kamar Kosong</a>
             <a href="#tagihan">Tagihan</a>
-            <a href="#penghuni">Penghuni</a>
             <a href="#kontak">Kontak</a>
         </nav>
         <div class="nav-actions">
-            <a href="/auth/register" class="btn btn-register">Akses Admin</a>
+            <a href="/login" class="btn btn-register">Akses Admin</a>
         </div>
     </header>
 
@@ -33,36 +32,89 @@
                 <a href="#kamar" class="btn btn-explore">Cari Kost</a>
             </div>
         </section>
+        <div class="hero-image-right">
+            <img src="/assets/img/background/kost.png" alt="Kost Modern" class="kost-image-right">
+        </div>
     </main>
 
     <!-- Section Kamar Kosong -->
-    <section id="kamar" class="section-content">
+    <section id="kamar" class="section-content section-scroll">
         <div class="container">
             <h2>Kamar Kosong</h2>
-            <p>Daftar kamar kosong dan harga sewanya akan tampil di sini.</p>
+            <div class="kost-slider-wrapper">
+                <button class="kost-slider-btn kost-slider-btn-left" aria-label="Sebelumnya"><span>&lt;</span></button>
+                <div class="kost-slider-viewport">
+                    <div class="kost-grid kost-slider">
+                        <!-- Blok 1: Kost 1-4 -->
+                        <div class="kost-card">
+                            <img src="/assets/img/background/kost1.png" alt="Kamar 1" class="kost-card-img">
+                            <div class="kost-card-title">Kamar 1</div>
+                            <div class="kost-card-info">Ukuran 3x4m, Kamar mandi dalam, AC, WiFi, Listrik token</div>
+                            <div class="kost-card-price">Rp1.200.000/bulan</div>
+                        </div>
+                        <div class="kost-card">
+                            <img src="/assets/img/background/kost1.png" alt="Kamar 2" class="kost-card-img">
+                            <div class="kost-card-title">Kamar 2</div>
+                            <div class="kost-card-info">Ukuran 3x3m, Kamar mandi luar, Kipas angin, WiFi</div>
+                            <div class="kost-card-price">Rp1.350.000/bulan</div>
+                        </div>
+                        <div class="kost-card">
+                            <img src="/assets/img/background/kost1.png" alt="Kamar 3" class="kost-card-img">
+                            <div class="kost-card-title">Kamar 3</div>
+                            <div class="kost-card-info">Ukuran 2.8x3m, Kamar mandi dalam, AC, WiFi, Listrik token</div>
+                            <div class="kost-card-price">Rp1.500.000/bulan</div>
+                        </div>
+                        <div class="kost-card">
+                            <img src="/assets/img/background/kost1.png" alt="Kamar 4" class="kost-card-img">
+                            <div class="kost-card-title">Kamar 4</div>
+                            <div class="kost-card-info">Ukuran 3x4m, Kamar mandi luar, Kipas angin, WiFi</div>
+                            <div class="kost-card-price">Rp1.700.000/bulan</div>
+                        </div>
+                        <!-- Blok 2: Kost 5-8 -->
+                        <div class="kost-card">
+                            <img src="/assets/img/background/kost1.png" alt="Kamar 5" class="kost-card-img">
+                            <div class="kost-card-title">Kamar 5</div>
+                            <div class="kost-card-info">Ukuran 3x3m, Kamar mandi dalam, AC, WiFi</div>
+                            <div class="kost-card-price">Rp1.250.000/bulan</div>
+                        </div>
+                        <div class="kost-card">
+                            <img src="/assets/img/background/kost1.png" alt="Kamar 6" class="kost-card-img">
+                            <div class="kost-card-title">Kamar 6</div>
+                            <div class="kost-card-info">Ukuran 2.5x3m, Kamar mandi luar, Kipas angin, WiFi</div>
+                            <div class="kost-card-price">Rp1.100.000/bulan</div>
+                        </div>
+                        <div class="kost-card">
+                            <img src="/assets/img/background/kost1.png" alt="Kamar 7" class="kost-card-img">
+                            <div class="kost-card-title">Kamar 7</div>
+                            <div class="kost-card-info">Ukuran 3x4m, Kamar mandi dalam, AC, WiFi, Listrik token</div>
+                            <div class="kost-card-price">Rp1.800.000/bulan</div>
+                        </div>
+                        <div class="kost-card">
+                            <img src="/assets/img/background/kost1.png" alt="Kamar 8" class="kost-card-img">
+                            <div class="kost-card-title">Kamar 8</div>
+                            <div class="kost-card-info">Ukuran 3x3m, Kamar mandi luar, Kipas angin, WiFi</div>
+                            <div class="kost-card-price">Rp1.300.000/bulan</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="kost-slider-btn kost-slider-btn-right" aria-label="Berikutnya"><span>&gt;</span></button>
+            </div>
         </div>
     </section>
     <!-- Section Tagihan -->
-    <section id="tagihan" class="section-content">
+    <section id="tagihan" class="section-content section-scroll">
         <div class="container">
             <h2>Tagihan</h2>
             <p>Informasi tagihan kamar yang harus dibayar dan yang terlambat bayar.</p>
         </div>
     </section>
-    <!-- Section Penghuni -->
-    <section id="penghuni" class="section-content">
-        <div class="container">
-            <h2>Penghuni</h2>
-            <p>Daftar penghuni kost dan detailnya akan tampil di sini.</p>
-        </div>
-    </section>
     <!-- Section Kontak -->
-    <section id="kontak" class="section-content">
+    <section id="kontak" class="section-content section-scroll">
         <div class="container">
             <h2>Kontak</h2>
             <ul class="contact-list">
-                <li><i class="fa-solid fa-envelope contact-icon"></i> Email: <a href="mailto:info@kostku.com">info@kostku.com</a></li>
-                <li><i class="fa-solid fa-phone contact-icon"></i> Telepon: <a href="tel:+628123456789">+62 812-3456-789</a></li>
+                <li><i class="fa-solid fa-envelope contact-icon"></i> Email: info@kostku.com</li>
+                <li><i class="fa-brands fa-whatsapp contact-icon"></i> Whatsapp: +62 812-3456-789</li>
                 <li><i class="fa-solid fa-location-dot contact-icon"></i> Alamat: Jl. Kost Modern No. 1, Pasar Minggu, Jakarta Selatan</li>
             </ul>
         </div>
@@ -80,11 +132,10 @@
             <div class="footer-col menu-col">
                 <h4>KOSTKU</h4>
                 <ul>
-                    <li><a href="#home">Tentang Kami</a></li>
-                    <li><a href="#kamar">Kamar Kosong</a></li>
-                    <li><a href="#tagihan">Tagihan</a></li>
-                    <li><a href="#penghuni">Penghuni</a></li>
-                    <li><a href="#kontak">Kontak</a></li>
+                    <li><a href="#home" class="footer-link">Tentang Kami</a></li>
+                    <li><a href="#kamar" class="footer-link">Kamar Kosong</a></li>
+                    <li><a href="#tagihan" class="footer-link">Tagihan</a></li>
+                    <li><a href="#kontak" class="footer-link">Kontak</a></li>
                 </ul>
             </div>
             <div class="footer-col kontak-col">
