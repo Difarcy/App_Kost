@@ -162,13 +162,57 @@ function handleAddPetugasSubmit() {
     });
 }
 
+// =============================
+// PENCARIAN & FILTER DINAMIS PEMBAYARAN (AJAX)
+// =============================
+
+function renderPembayaranTable(data) {
+  const tbody = document.querySelector('#tableContainer tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  if (!data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-table-message">Tidak ada data pembayaran.</td></tr>';
+    return;
+  }
+  data.forEach((p, idx) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${idx + 1}</td>
+        <td>${p.nama_penghuni}</td>
+        <td>${p.bulan}</td>
+        <td>Rp${parseInt(p.jml_tagihan).toLocaleString('id-ID')}</td>
+        <td>Rp${parseInt(p.jml_bayar).toLocaleString('id-ID')}</td>
+        <td>${p.status}</td>
+        <td>${p.tgl_bayar}</td>
+        <td>
+          <div class="table-actions">
+            <a href="#" class="action-btn action-btn-edit" onclick="editPembayaran(${p.id})">Edit</a>
+            <a href="#" class="action-btn action-btn-delete" onclick="confirmDeletePembayaran(${p.id})">Hapus</a>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function fetchAndRenderPembayaran() {
+  const searchInput = document.querySelector('input[name="search"]');
+  const statusDropdown = document.querySelector('select[name="status"]');
+  let url = `/admin/pembayaran/search?search=${encodeURIComponent(searchInput ? searchInput.value : '')}&status=${encodeURIComponent(statusDropdown ? statusDropdown.value : '')}`;
+  fetch(url)
+    .then(res => res.json())
+    .then(data => renderPembayaranTable(data));
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.querySelector('input[name="search"]');
   const jabatanDropdown = document.querySelector('select[name="jabatan"]');
+  const statusDropdown = document.querySelector('select[name="status"]');
   
   // Hanya gunakan AJAX untuk search dan filter
   if (searchInput) searchInput.addEventListener('input', fetchAndRender);
   if (jabatanDropdown) jabatanDropdown.addEventListener('change', fetchAndRender);
+  if (statusDropdown) statusDropdown.addEventListener('change', fetchAndRenderPembayaran);
   
   // Entries dropdown akan ditangani oleh main.js dengan form submission normal
 });

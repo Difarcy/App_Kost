@@ -5,8 +5,17 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'Beranda::index');
 $routes->get('/admin', 'Dashboard::index');
+$routes->get('/admin/dashboard', 'Dashboard::index');
 $routes->get('login', 'Auth::login');
 $routes->post('login', 'Auth::doLogin');
+$routes->get('logout', 'Auth::logout');
+
+// Sidebar routes
+$routes->get('admin/kamar', 'Kamar::index');
+$routes->get('admin/penghuni', 'Penghuni::index');
+$routes->get('admin/tagihan', 'Tagihan::index');
+$routes->get('admin/pembayaran', 'Pembayaran::index');
+$routes->get('admin/barang', 'Barang::index');
 
 // Resource routes untuk admin CRUD
 define('ADMIN', 'admin');

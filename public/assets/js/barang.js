@@ -161,13 +161,53 @@ function handleAddSupplierSubmit() {
     });
 }
 
+// =============================
+// PENCARIAN & FILTER DINAMIS BARANG (AJAX)
+// =============================
+
+function renderBarangTable(data) {
+  const tbody = document.querySelector('#tableContainer tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  if (!data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-table-message">Tidak ada data barang.</td></tr>';
+    return;
+  }
+  data.forEach((b, idx) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${idx + 1}</td>
+        <td>${b.nama}</td>
+        <td>Rp${parseInt(b.harga).toLocaleString('id-ID')}</td>
+        <td>
+          <div class="table-actions">
+            <a href="#" class="action-btn action-btn-edit" onclick="editBarang(${b.id})">Edit</a>
+            <a href="#" class="action-btn action-btn-delete" onclick="confirmDeleteBarang(${b.id}, '${b.nama}')">Hapus</a>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function fetchAndRenderBarang() {
+  const searchInput = document.querySelector('input[name="search"]');
+  const hargaDropdown = document.querySelector('select[name="harga"]');
+  let url = `/admin/barang/search?search=${encodeURIComponent(searchInput ? searchInput.value : '')}&harga=${encodeURIComponent(hargaDropdown ? hargaDropdown.value : '')}`;
+  fetch(url)
+    .then(res => res.json())
+    .then(data => renderBarangTable(data));
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.querySelector('input[name="search"]');
   const kotaDropdown = document.querySelector('select[name="kota"]');
+  const hargaDropdown = document.querySelector('select[name="harga"]');
   
   // Hanya gunakan AJAX untuk search dan filter
   if (searchInput) searchInput.addEventListener('input', fetchAndRender);
   if (kotaDropdown) kotaDropdown.addEventListener('change', fetchAndRender);
+  if (hargaDropdown) hargaDropdown.addEventListener('change', fetchAndRenderBarang);
   
   // Entries dropdown akan ditangani oleh main.js dengan form submission normal
 });

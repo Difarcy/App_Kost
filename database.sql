@@ -78,3 +78,46 @@ CREATE TABLE tb_admin (
 -- Insert akun admin
 INSERT INTO tb_admin (username, password) VALUES
 ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); 
+
+-- Dummy data untuk tb_penghuni
+INSERT INTO tb_penghuni (nama, no_ktp, no_hp, tgl_masuk, tgl_keluar) VALUES
+('Budi Santoso', '1234567890123456', '081234567890', '2024-01-10', NULL),
+('Siti Aminah', '2345678901234567', '082345678901', '2024-02-15', '2024-06-01'),
+('Andi Wijaya', '3456789012345678', '083456789012', '2024-03-01', NULL);
+
+-- Dummy data untuk tb_kamar
+INSERT INTO tb_kamar (nomor, harga) VALUES
+('A1', 1200000.00),
+('A2', 950000.00),
+('B1', 1500000.00);
+
+-- Dummy data untuk tb_barang
+INSERT INTO tb_barang (nama, harga) VALUES
+('Kipas Angin', 50000.00),
+('Meja Belajar', 75000.00),
+('Lemari', 100000.00);
+
+-- Dummy data untuk tb_kmr_penghuni
+INSERT INTO tb_kmr_penghuni (id_kamar, id_penghuni, tgl_masuk, tgl_keluar) VALUES
+(1, 1, '2024-01-10', NULL),
+(2, 2, '2024-02-15', '2024-06-01'),
+(3, 3, '2024-03-01', NULL);
+
+-- Dummy data untuk tb_brng_bawaan
+INSERT INTO tb_brng_bawaan (id_penghuni, id_barang) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 1);
+
+-- Dummy data untuk tb_tagihan
+INSERT INTO tb_tagihan (bulan, id_kmr_penghuni, jml_tagihan) VALUES
+('2024-06-01', 1, 1200000.00),
+('2024-06-01', 2, 950000.00),
+('2024-06-01', 3, 1500000.00);
+
+-- Dummy data untuk tb_bayar
+INSERT INTO tb_bayar (id_tagihan, jml_bayar, status, tgl_bayar) VALUES
+(1, 1200000.00, 'lunas', '2024-06-02 10:00:00'),
+(2, 950000.00, 'lunas', '2024-06-03 11:00:00'),
+(3, 1000000.00, 'cicil', '2024-06-04 12:00:00'); 

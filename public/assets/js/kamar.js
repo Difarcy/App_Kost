@@ -165,13 +165,53 @@ function confirmDeleteStokBarang(id, nama) {
   }
 }
 
+// =============================
+// PENCARIAN & FILTER DINAMIS KAMAR (AJAX)
+// =============================
+
+function renderKamarTable(data) {
+  const tbody = document.querySelector('#tableContainer tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  if (!data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-table-message">Tidak ada data kamar.</td></tr>';
+    return;
+  }
+  data.forEach((k, idx) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${idx + 1}</td>
+        <td>${k.nomor}</td>
+        <td>Rp${parseInt(k.harga).toLocaleString('id-ID')}</td>
+        <td>
+          <div class="table-actions">
+            <a href="#" class="action-btn action-btn-edit" onclick="editKamar(${k.id})">Edit</a>
+            <a href="#" class="action-btn action-btn-delete" onclick="confirmDeleteKamar(${k.id}, '${k.nomor}')">Hapus</a>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function fetchAndRenderKamar() {
+  const searchInput = document.querySelector('input[name="search"]');
+  const hargaDropdown = document.querySelector('select[name="harga"]');
+  let url = `/admin/kamar/search?search=${encodeURIComponent(searchInput ? searchInput.value : '')}&harga=${encodeURIComponent(hargaDropdown ? hargaDropdown.value : '')}`;
+  fetch(url)
+    .then(res => res.json())
+    .then(data => renderKamarTable(data));
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.querySelector('input[name="search"]');
   const kategoriDropdown = document.querySelector('select[name="kategori"]');
+  const hargaDropdown = document.querySelector('select[name="harga"]');
   
   // Hanya gunakan AJAX untuk search dan filter
   if (searchInput) searchInput.addEventListener('input', fetchAndRender);
   if (kategoriDropdown) kategoriDropdown.addEventListener('change', fetchAndRender);
+  if (hargaDropdown) hargaDropdown.addEventListener('change', fetchAndRenderKamar);
   
   // Entries dropdown akan ditangani oleh main.js dengan form submission normal
 });

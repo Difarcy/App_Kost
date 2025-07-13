@@ -1,75 +1,49 @@
 <?= $this->extend('layouts/admin') ?>
-<?= $this->section('title') ?>Stok Barang<?= $this->endSection() ?>
+<?= $this->section('title') ?>Kamar<?= $this->endSection() ?>
 <?= $this->section('content') ?>
 
-<h2 class="main-page-title">Stok Barang</h2>
-
+<h2 class="main-page-title">Kamar</h2>
 <div class="main-container">
   <div class="main-card">
     <div class="main-content">
-      <!-- Profil Toko Print Only -->
-      <?php if (!empty($profil_toko)): ?>
-      <div class="profil-toko-print" style="display:none;text-align:center;margin-bottom:24px;">
-        <div style="font-size:20px;font-weight:bold;"> <?= esc($profil_toko['nama_toko']) ?> </div>
-        <div>Pemilik: <?= esc($profil_toko['nama_pemilik']) ?> | Telp: <?= esc($profil_toko['no_telepon']) ?></div>
-        <div>Alamat: <?= esc($profil_toko['alamat']) ?></div>
-      </div>
-      <?php endif; ?>
-      <!-- Filter Section -->
-      <div class="filter-section">
-        <div class="filter-header">
-          <div class="filter-controls">
-            <button type="button" class="btn btn-success" onclick="openModal('export')">
-              <i class="fas fa-file-excel"></i> Export
-            </button>
-            <button type="button" class="btn btn-info" onclick="printPage()">
-              <i class="fas fa-print"></i> Cetak
-            </button>
-            <button type="button" class="btn btn-primary" onclick="openModal('tambahBarang')">
-              <i class="fas fa-plus"></i> Tambah Barang
-            </button>
-          </div>
+      <!-- Toolbar: Export, Cetak, Tambah, Pencarian, Filter -->
+      <div class="filter-section" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px;">
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button type="button" class="btn btn-success" onclick="alert('Export belum diimplementasikan!')">
+            <i class="fas fa-file-export"></i> Export
+          </button>
+          <button type="button" class="btn btn-info" onclick="window.print()">
+            <i class="fas fa-print"></i> Cetak
+          </button>
+          <button type="button" class="btn btn-primary" onclick="alert('Form tambah kamar belum diimplementasikan!')">
+            <i class="fas fa-plus"></i> Tambah Kamar
+          </button>
         </div>
-        <form method="get" id="filterForm">
-          <div class="filter-controls">
-            <div class="filter-group">
-              <label for="search">Pencarian</label>
-              <input type="text" name="search" placeholder="Cari kode, nama, kategori..." value="<?= esc($filterSearch) ?>">
-            </div>
-            <div class="filter-group">
-              <label for="kategori">Kategori</label>
-              <select name="kategori">
-                <option value="">Semua Kategori</option>
-                <?php foreach ($kategoriList as $kat): ?>
-                  <option value="<?= esc($kat) ?>" <?= $filterKategori == $kat ? 'selected' : '' ?>><?= esc($kat) ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label>&nbsp;</label>
-              <button type="button" class="btn btn-outline-secondary" onclick="handleResetButton()">
-                <i class="fas fa-refresh"></i> Reset
-              </button>
-            </div>
-          </div>
+        <form method="get" style="display: flex; gap: 8px; align-items: center;">
+          <input type="text" name="search" placeholder="Cari nomor kamar..." value="<?= esc($_GET['search'] ?? '') ?>" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc; min-width: 180px;">
+          <select name="harga" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc;">
+            <option value="">Semua Harga</option>
+            <option value="<1000000" <?= (isset($_GET['harga']) && $_GET['harga'] == '<1000000') ? 'selected' : '' ?>>Di bawah 1 juta</option>
+            <option value=">=1000000" <?= (isset($_GET['harga']) && $_GET['harga'] == '>=1000000') ? 'selected' : '' ?>>1 juta ke atas</option>
+          </select>
+          <button type="submit" class="btn btn-outline-secondary">Reset</button>
         </form>
       </div>
-      <!-- Show Entries Filter -->
-      <div class="show-entries-bar" id="showEntriesBar">
-        <form method="get" id="entriesForm" class="entries-form">
+      <!-- Show Entries Dropdown -->
+      <div class="show-entries-bar" style="margin-bottom: 12px;">
+        <form method="get" style="display: flex; align-items: center; gap: 8px;">
           <label for="entries">Show</label>
-          <select id="entries" name="entries">
-            <option value="10" <?= ($perPage == 10) ? 'selected' : '' ?>>10</option>
-            <option value="25" <?= ($perPage == 25) ? 'selected' : '' ?>>25</option>
-            <option value="50" <?= ($perPage == 50) ? 'selected' : '' ?>>50</option>
-            <option value="100" <?= ($perPage == 100) ? 'selected' : '' ?>>100</option>
+          <select id="entries" name="entries" onchange="this.form.submit()">
+            <option value="10" <?= (isset($_GET['entries']) && $_GET['entries'] == 10) ? 'selected' : '' ?>>10</option>
+            <option value="25" <?= (isset($_GET['entries']) && $_GET['entries'] == 25) ? 'selected' : '' ?>>25</option>
+            <option value="50" <?= (isset($_GET['entries']) && $_GET['entries'] == 50) ? 'selected' : '' ?>>50</option>
+            <option value="100" <?= (isset($_GET['entries']) && $_GET['entries'] == 100) ? 'selected' : '' ?>>100</option>
           </select>
           <span>entries</span>
-          <input type="hidden" name="search" value="<?= esc($filterSearch) ?>">
-          <input type="hidden" name="kategori" value="<?= esc($filterKategori) ?>">
+          <input type="hidden" name="search" value="<?= esc($_GET['search'] ?? '') ?>">
+          <input type="hidden" name="harga" value="<?= esc($_GET['harga'] ?? '') ?>">
         </form>
       </div>
-      <!-- Table Section -->
       <div class="table-container" id="tableContainer">
         <table class="data-table">
           <thead>
@@ -81,16 +55,40 @@
             </tr>
           </thead>
           <tbody>
-          <?php if (!empty($kamarList)): ?>
-            <?php $no = 1 + (($currentPage - 1) * $perPage); foreach ($kamarList as $kamar): ?>
+          <?php
+          $filtered = $kamar;
+          // Filter pencarian
+          if (!empty($_GET['search'])) {
+            $filtered = array_filter($filtered, function($k) {
+              return stripos($k['nomor'], $_GET['search']) !== false;
+            });
+          }
+          // Filter harga
+          if (!empty($_GET['harga'])) {
+            if ($_GET['harga'] == '<1000000') {
+              $filtered = array_filter($filtered, function($k) { return $k['harga'] < 1000000; });
+            } elseif ($_GET['harga'] == '>=1000000') {
+              $filtered = array_filter($filtered, function($k) { return $k['harga'] >= 1000000; });
+            }
+          }
+          // Pagination logic
+          $entries = isset($_GET['entries']) ? (int)$_GET['entries'] : 10;
+          $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+          $total = count($filtered);
+          $totalPages = max(1, ceil($total / $entries));
+          $start = ($page - 1) * $entries;
+          $pagedData = array_slice($filtered, $start, $entries);
+          ?>
+          <?php if (!empty($pagedData)): ?>
+            <?php $no = 1 + $start; foreach ($pagedData as $k): ?>
             <tr>
               <td><?= $no++ ?></td>
-              <td><?= esc($kamar['nomor']) ?></td>
-              <td>Rp<?= number_format($kamar['harga'],0,',','.') ?></td>
+              <td><?= esc($k['nomor']) ?></td>
+              <td>Rp<?= number_format($k['harga'],0,',','.') ?></td>
               <td>
                 <div class="table-actions">
-                  <a href="#" class="action-btn action-btn-edit" onclick="editKamar(<?= $kamar['id'] ?>)">Edit</a>
-                  <a href="#" class="action-btn action-btn-delete" onclick="confirmDeleteKamar(<?= $kamar['id'] ?>, '<?= esc($kamar['nomor']) ?>')">Hapus</a>
+                  <a href="#" class="action-btn action-btn-edit" onclick="editKamar(<?= $k['id'] ?>)">Edit</a>
+                  <a href="#" class="action-btn action-btn-delete" onclick="confirmDeleteKamar(<?= $k['id'] ?>, '<?= esc($k['nomor']) ?>')">Hapus</a>
                 </div>
               </td>
             </tr>
@@ -103,116 +101,37 @@
           </tbody>
         </table>
       </div>
-      <div class="pagination-bar" id="paginationBar">
+      <!-- Pagination Bar -->
+      <div class="pagination-bar" style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
         <div class="pagination-info">
-          Showing <?= ($total > 0) ? ($perPage * ($currentPage - 1)) + 1 : 0 ?> to <?= min(($perPage * ($currentPage - 1)) + count($stokBarang), $total) ?> of <?= $total ?> entries
+          Menampilkan <?= ($total > 0) ? $start + 1 : 0 ?> sampai <?= min($start + count($pagedData), $total) ?> dari <?= $total ?> data
         </div>
         <div class="pagination-nav">
           <?php
-          $startPage = max(1, $currentPage - 1);
-          $endPage = min($totalPages, $currentPage + 1);
-          if ($currentPage <= 2) {
-              $endPage = min($totalPages, 3);
-          }
-          if ($currentPage >= $totalPages - 1) {
-              $startPage = max(1, $totalPages - 2);
-          }
+          $queryBase = http_build_query(array_merge($_GET, ['page' => null]));
+          $queryBase = preg_replace('/(&|\?)page=[^&]*/', '', $queryBase);
+          if ($queryBase && substr($queryBase, -1) !== '&') $queryBase .= '&';
           ?>
-          <?php if ($currentPage > 1): ?>
-            <a href="?page=<?= $currentPage - 1 ?>&search=<?= urlencode($filterSearch) ?>&kategori=<?= urlencode($filterKategori) ?>&entries=<?= $perPage ?>" class="pagination-link-with-params">
-              <i class="fas fa-chevron-left"></i>
-            </a>
+          <?php if ($page > 1): ?>
+            <a href="?<?= $queryBase ?>page=<?= $page - 1 ?>" class="pagination-link"><i class="fas fa-chevron-left"></i></a>
           <?php else: ?>
-            <span class="pagination-link disabled">
-              <i class="fas fa-chevron-left"></i>
-            </span>
+            <span class="pagination-link disabled"><i class="fas fa-chevron-left"></i></span>
           <?php endif; ?>
-          <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
-            <?php if ($i == $currentPage): ?>
-              <span class="pagination-link active"><?= $i ?></span>
+          <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <?php if ($i == $page): ?>
+              <span class="pagination-link active"> <?= $i ?> </span>
             <?php else: ?>
-              <a href="?page=<?= $i ?>&search=<?= urlencode($filterSearch) ?>&kategori=<?= urlencode($filterKategori) ?>&entries=<?= $perPage ?>" class="pagination-link-with-params"><?= $i ?></a>
+              <a href="?<?= $queryBase ?>page=<?= $i ?>" class="pagination-link"> <?= $i ?> </a>
             <?php endif; ?>
           <?php endfor; ?>
-          <?php if ($currentPage < $totalPages): ?>
-            <a href="?page=<?= $currentPage + 1 ?>&search=<?= urlencode($filterSearch) ?>&kategori=<?= urlencode($filterKategori) ?>&entries=<?= $perPage ?>" class="pagination-link-with-params">
-              <i class="fas fa-chevron-right"></i>
-            </a>
+          <?php if ($page < $totalPages): ?>
+            <a href="?<?= $queryBase ?>page=<?= $page + 1 ?>" class="pagination-link"><i class="fas fa-chevron-right"></i></a>
           <?php else: ?>
-            <span class="pagination-link disabled">
-              <i class="fas fa-chevron-right"></i>
-            </span>
+            <span class="pagination-link disabled"><i class="fas fa-chevron-right"></i></span>
           <?php endif; ?>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Modal Tambah/Edit Barang -->
-<div id="modalTambahBarang" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3 id="modalTitle">Tambah Barang</h3>
-      <span class="close" onclick="closeModal('tambahBarang')">&times;</span>
-    </div>
-    <form id="formBarang" method="post">
-      <input type="hidden" id="barang_id" name="id">
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="kode_barang">Kode Barang</label>
-          <input type="text" id="kode_barang" name="kode_barang">
-        </div>
-        <div class="form-group">
-          <label for="nama_barang">Nama Barang</label>
-          <input type="text" id="nama_barang" name="nama_barang">
-        </div>
-        <div class="form-group">
-          <label for="kategori_barang">Kategori</label>
-          <input type="text" id="kategori_barang" name="kategori_barang" placeholder="Masukkan kategori barang">
-        </div>
-        <div class="form-group">
-          <label for="stok">Stok</label>
-          <input type="number" id="stok" name="stok" min="0">
-        </div>
-        <div class="form-group">
-          <label for="satuan">Satuan</label>
-          <input type="text" id="satuan" name="satuan">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" onclick="closeModal('tambahBarang')">Batal</button>
-        <button type="button" class="btn btn-primary" onclick="handleFormSubmit()">Simpan</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- Modal Export -->
-<div id="modalExport" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3>Export Data Barang</h3>
-      <span class="close" onclick="closeModal('export')">&times;</span>
-    </div>
-    <div class="modal-body">
-      <p>Pilih format file yang ingin di-export:</p>
-      <div class="export-options">
-        <div class="export-option" onclick="exportData('excel')">
-          <div class="export-icon"><i class="fas fa-file-excel"></i></div>
-          <div class="export-text">Excel</div>
-        </div>
-        <div class="export-option" onclick="exportData('pdf')">
-          <div class="export-icon"><i class="fas fa-file-pdf"></i></div>
-          <div class="export-text">PDF</div>
-        </div>
-        <div class="export-option" onclick="exportData('csv')">
-          <div class="export-icon"><i class="fas fa-file-csv"></i></div>
-          <div class="export-text">CSV</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <?= $this->endSection() ?> 

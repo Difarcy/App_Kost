@@ -180,3 +180,51 @@ function handleEditBarangMasukSubmit() {
       }
     });
 }
+
+// =============================
+// PENCARIAN & FILTER DINAMIS PENGHUNI (AJAX)
+// =============================
+
+function renderPenghuniTable(data) {
+  const tbody = document.querySelector('#tableContainer tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  if (!data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-table-message">Tidak ada data penghuni.</td></tr>';
+    return;
+  }
+  data.forEach((p, idx) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${idx + 1}</td>
+        <td>${p.nama}</td>
+        <td>${p.no_ktp}</td>
+        <td>${p.no_hp}</td>
+        <td>${p.tgl_masuk}</td>
+        <td>${p.tgl_keluar || ''}</td>
+        <td>
+          <div class="table-actions">
+            <a href="#" class="action-btn action-btn-edit" onclick="editPenghuni(${p.id})">Edit</a>
+            <a href="#" class="action-btn action-btn-delete" onclick="confirmDeletePenghuni(${p.id}, '${p.nama}')">Hapus</a>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function fetchAndRenderPenghuni() {
+  const searchInput = document.querySelector('input[name="search"]');
+  const tglMasukInput = document.querySelector('input[name="tgl_masuk"]');
+  let url = `/admin/penghuni/search?search=${encodeURIComponent(searchInput ? searchInput.value : '')}&tgl_masuk=${encodeURIComponent(tglMasukInput ? tglMasukInput.value : '')}`;
+  fetch(url)
+    .then(res => res.json())
+    .then(data => renderPenghuniTable(data));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.querySelector('input[name="search"]');
+  const tglMasukInput = document.querySelector('input[name="tgl_masuk"]');
+  if (searchInput) searchInput.addEventListener('input', fetchAndRenderPenghuni);
+  if (tglMasukInput) tglMasukInput.addEventListener('change', fetchAndRenderPenghuni);
+});

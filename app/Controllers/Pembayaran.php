@@ -15,7 +15,7 @@ class Pembayaran extends BaseController
     public function index()
     {
         $data['pembayaran'] = $this->bayarModel->findAll();
-        return view('admin/pembayaran/index', $data);
+        return view('pembayaran', $data);
     }
 
     public function show($id)

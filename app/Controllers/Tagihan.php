@@ -15,7 +15,7 @@ class Tagihan extends BaseController
     public function index()
     {
         $data['tagihan'] = $this->tagihanModel->findAll();
-        return view('admin/tagihan/index', $data);
+        return view('tagihan', $data);
     }
 
     public function show($id)

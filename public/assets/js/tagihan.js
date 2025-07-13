@@ -167,3 +167,50 @@ function handleAddCustomerSubmit() {
       }
     });
 }
+
+// =============================
+// PENCARIAN & FILTER DINAMIS TAGIHAN (AJAX)
+// =============================
+
+function renderTagihanTable(data) {
+  const tbody = document.querySelector('#tableContainer tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  if (!data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-table-message">Tidak ada data tagihan.</td></tr>';
+    return;
+  }
+  data.forEach((t, idx) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${idx + 1}</td>
+        <td>${t.bulan}</td>
+        <td>${t.nama_penghuni}</td>
+        <td>${t.nomor_kamar}</td>
+        <td>Rp${parseInt(t.jml_tagihan).toLocaleString('id-ID')}</td>
+        <td>
+          <div class="table-actions">
+            <a href="#" class="action-btn action-btn-edit" onclick="editTagihan(${t.id})">Edit</a>
+            <a href="#" class="action-btn action-btn-delete" onclick="confirmDeleteTagihan(${t.id})">Hapus</a>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function fetchAndRenderTagihan() {
+  const searchInput = document.querySelector('input[name="search"]');
+  const bulanInput = document.querySelector('input[name="bulan"]');
+  let url = `/admin/tagihan/search?search=${encodeURIComponent(searchInput ? searchInput.value : '')}&bulan=${encodeURIComponent(bulanInput ? bulanInput.value : '')}`;
+  fetch(url)
+    .then(res => res.json())
+    .then(data => renderTagihanTable(data));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.querySelector('input[name="search"]');
+  const bulanInput = document.querySelector('input[name="bulan"]');
+  if (searchInput) searchInput.addEventListener('input', fetchAndRenderTagihan);
+  if (bulanInput) bulanInput.addEventListener('change', fetchAndRenderTagihan);
+});

@@ -15,7 +15,7 @@ class Penghuni extends BaseController
     public function index()
     {
         $data['penghuni'] = $this->penghuniModel->findAll();
-        return view('admin/penghuni/index', $data);
+        return view('penghuni', $data);
     }
 
     public function show($id)

@@ -15,7 +15,7 @@ class Kamar extends BaseController
     public function index()
     {
         $data['kamar'] = $this->kamarModel->findAll();
-        return view('admin/kamar/index', $data);
+        return view('kamar', $data);
     }
 
     public function show($id)
