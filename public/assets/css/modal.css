@@ -5,84 +5,84 @@ html, body {
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Modal Wrapper */
-.modal {
-    display: none;
+/* Overlay */
+.modal-overlay {
     position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(30, 41, 59, 0.45);
     z-index: 1000;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modal-fade-in 0.2s;
 }
 
-/* Show Class */
-.modal.show {
-    display: block;
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* Modal Content di Tengah */
-.modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    
+/* Modal Box */
+.modal-box {
     background: #fff;
-    max-width: 400px;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px 0 rgba(30,41,59,0.18);
+  max-width: 420px;
     width: 95vw;
-    max-height: 90vh;
-    overflow-y: auto;
-
-    font-size: 0.88rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 32px 24px 24px 24px;
+  position: relative;
+  animation: modal-slide-in 0.25s cubic-bezier(.4,1.4,.6,1);
 }
 
-/* Header */
-.modal-header {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1rem;
+@keyframes modal-slide-in {
+  from { transform: translateY(40px) scale(0.98); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.modal-title {
+  font-size: 1.25rem;
     font-weight: 600;
-    background: #fff;
-}
-.modal-header h3 {
-    margin: 0;
-    font-size: 1rem;
+  margin-bottom: 18px;
+  color: #222;
 }
 
-/* Tombol Close */
-.close {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #888;
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
     background: none;
     border: none;
+  font-size: 1.5rem;
+  color: #64748b;
     cursor: pointer;
+  transition: color 0.2s;
+  z-index: 2;
 }
-.close:hover {
-    color: #222;
-}
-
-/* Body */
-.modal-body {
-    padding: 20px;
-    background: #fff;
+.modal-close:hover {
+  color: #ef4444;
 }
 
-/* Footer */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .modal-footer {
-    padding: 15px 20px;
-    border-top: 1px solid #eee;
-    background: #fff;
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 600px) {
+  .modal-box {
+    max-width: 98vw;
+    padding: 18px 6vw 18px 6vw;
+  }
+  .modal-title {
+    font-size: 1.1rem;
+  }
 }
 
 /* Form */

@@ -14,7 +14,13 @@ class Pembayaran extends BaseController
 
     public function index()
     {
-        $data['pembayaran'] = $this->bayarModel->findAll();
+        $db = \Config\Database::connect();
+        $builder = $db->table('tb_bayar b')
+            ->select('b.id, b.jml_bayar, b.status, b.tgl_bayar, t.bulan, t.jml_tagihan, p.nama as nama_penghuni')
+            ->join('tb_tagihan t', 't.id = b.id_tagihan')
+            ->join('tb_kmr_penghuni kp', 'kp.id = t.id_kmr_penghuni')
+            ->join('tb_penghuni p', 'p.id = kp.id_penghuni');
+        $data['pembayaran'] = $builder->get()->getResultArray();
         return view('pembayaran', $data);
     }
 

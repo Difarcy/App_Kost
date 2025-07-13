@@ -94,8 +94,8 @@
                             <div class="kost-card-title">Kamar 8</div>
                             <div class="kost-card-info">Ukuran 3x3m, Kamar mandi luar, Kipas angin, WiFi</div>
                             <div class="kost-card-price">Rp1.300.000/bulan</div>
-                        </div>
-                    </div>
+                </div>
+                </div>
                 </div>
                 <button class="kost-slider-btn kost-slider-btn-right" aria-label="Berikutnya"><span>&gt;</span></button>
             </div>
@@ -105,7 +105,32 @@
     <section id="tagihan" class="section-content section-scroll">
         <div class="container">
             <h2>Tagihan</h2>
-            <p>Informasi tagihan kamar yang harus dibayar dan yang terlambat bayar.</p>
+            <div class="tagihan-info">
+              <h3>Kamar Hampir Jatuh Tempo Bayar</h3>
+              <?php if (!empty($hampirJatuhTempo)): ?>
+                <ul class="tagihan-list">
+                  <?php foreach ($hampirJatuhTempo as $row): ?>
+                    <li>
+                      Kamar <b><?= esc($row['nomor_kamar']) ?></b> (<?= esc($row['nama_penghuni']) ?>) - Tanggal Masuk: <?= date('d M Y', strtotime($row['tgl_masuk'])) ?>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php else: ?>
+                <div class="tagihan-empty">Tidak ada kamar yang hampir jatuh tempo bayar.</div>
+              <?php endif; ?>
+              <h3>Kamar Terlambat Bayar</h3>
+              <?php if (!empty($terlambatBayar)): ?>
+                <ul class="tagihan-list">
+                  <?php foreach ($terlambatBayar as $row): ?>
+                    <li>
+                      Kamar <b><?= esc($row['nomor_kamar']) ?></b> (<?= esc($row['nama_penghuni']) ?>) - Tagihan Bulan: <?= date('M Y', strtotime($row['bulan'])) ?>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php else: ?>
+                <div class="tagihan-empty">Tidak ada kamar yang terlambat bayar.</div>
+              <?php endif; ?>
+            </div>
         </div>
     </section>
     <!-- Section Kontak -->
@@ -117,7 +142,7 @@
                 <li><i class="fa-brands fa-whatsapp contact-icon"></i> Whatsapp: +62 812-3456-789</li>
                 <li><i class="fa-solid fa-location-dot contact-icon"></i> Alamat: Jl. Kost Modern No. 1, Pasar Minggu, Jakarta Selatan</li>
             </ul>
-        </div>
+                </div>
     </section>
 
     <footer class="footer-pro2025 footer-black">
@@ -128,7 +153,7 @@
                     <span class="footer-title">KostKu</span>
                 </div>
                 <p class="footer-desc">KostKu menyediakan informasi kost terbaik dengan lingkungan yang nyaman, aman, dan terpercaya, untuk mendukung hunian ideal sesuai gaya hidup Anda.</p>
-            </div>
+                </div>
             <div class="footer-col menu-col">
                 <h4>KOSTKU</h4>
                 <ul>

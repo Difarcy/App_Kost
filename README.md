@@ -1,68 +1,65 @@
-# CodeIgniter 4 Application Starter
+# Aplikasi Pengelolaan KostKu
 
-## What is CodeIgniter?
+Aplikasi ini adalah sistem manajemen kost berbasis web yang dibangun dengan CodeIgniter 4. Digunakan untuk mengelola data penghuni, kamar, barang, tagihan, pembayaran, dan relasi antar data di lingkungan kost.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Fitur Utama
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+- **Manajemen Penghuni Kost**: CRUD data penghuni (nama, KTP, HP, tanggal masuk, tanggal keluar)
+- **Manajemen Kamar**: CRUD data kamar (nomor kamar, harga sewa)
+- **Manajemen Barang**: CRUD data barang (nama barang, harga) untuk barang yang dikenai biaya tambahan
+- **Relasi Kamar-Penghuni**: Catat kamar yang ditempati penghuni, tanggal masuk & keluar
+- **Barang Bawaan Penghuni**: Catat barang bawaan penghuni
+- **Tagihan Otomatis**: Tagihan bulanan otomatis, jumlah = harga kamar + harga barang bawaan
+- **Pembayaran**: Catat pembayaran, status lunas/cicil, dan riwayat pembayaran
+- **Pindah Kamar & Keluar Kost**: Update otomatis tanggal keluar kamar/penghuni
+- **Dashboard Admin**: Statistik kamar, penghuni, tagihan, pembayaran, grafik pendapatan
+- **Halaman Depan**: Info kamar kosong, kamar hampir jatuh tempo bayar, kamar terlambat bayar
+- **Export, Print, Modal Modern**: Semua aksi utama menggunakan modal modern, print preview hanya tabel
+- **Pencarian, Filter, Pagination**: Semua tabel utama mendukung pencarian, filter, dan pagination
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Struktur Database
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- **tb_penghuni** (id, nama, no_ktp, no_hp, tgl_masuk, tgl_keluar)
+- **tb_kamar** (id, nomor, harga)
+- **tb_barang** (id, nama, harga)
+- **tb_kmr_penghuni** (id, id_kamar, id_penghuni, tgl_masuk, tgl_keluar)
+- **tb_brng_bawaan** (id, id_penghuni, id_barang)
+- **tb_tagihan** (id, bulan, id_kmr_penghuni, jml_tagihan)
+- **tb_bayar** (id, id_tagihan, jml_bayar, status)
 
-## Installation & updates
+## Instalasi
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+1. **Clone repository**
+2. **Install dependency**
+   ```bash
+   composer install
+   ```
+3. **Copy file env ke .env**
+   ```bash
+   cp env .env
+   ```
+4. **Atur koneksi database** di file `.env` (DB hostname, username, password, database)
+5. **Import database**
+   - Import file `database.sql` ke MySQL Anda
+6. **Jalankan server**
+   ```bash
+   php spark serve
+   ```
+7. **Akses aplikasi**
+   - Halaman depan: `http://localhost:8080/`
+   - Admin: `http://localhost:8080/login` (login sebagai admin)
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+## Akun Admin Default
+- Username dan password admin dapat diatur di database (lihat tabel user jika ada)
 
-## Setup
+## Catatan Penting
+- Pastikan folder `writable/` dapat ditulis oleh web server
+- Semua file asset (CSS, JS, gambar) ada di folder `public/assets/`
+- Untuk keamanan, pastikan web server mengarah ke folder `public/`
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## Lisensi
+Aplikasi ini menggunakan lisensi MIT. Lihat file LICENSE untuk detail.
 
-## Important Change with index.php
+---
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 8.1 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+Aplikasi ini dikembangkan untuk memenuhi kebutuhan pengelolaan kost modern, mudah digunakan, dan siap dikembangkan lebih lanjut.

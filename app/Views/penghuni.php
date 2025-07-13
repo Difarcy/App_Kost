@@ -7,29 +7,29 @@
   <div class="main-card">
     <div class="main-content">
       <!-- Toolbar: Export, Cetak, Tambah, Pencarian, Filter -->
-      <div class="filter-section" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px;">
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <button type="button" class="btn btn-success" onclick="alert('Export belum diimplementasikan!')">
+      <div class="filter-section">
+        <div class="toolbar-group">
+          <button type="button" class="btn btn-success" onclick="openModal('modalExportPenghuni')">
             <i class="fas fa-file-export"></i> Export
           </button>
-          <button type="button" class="btn btn-info" onclick="window.print()">
+          <button type="button" class="btn btn-info" onclick="printPenghuniTable()">
             <i class="fas fa-print"></i> Cetak
           </button>
-          <button type="button" class="btn btn-primary" onclick="alert('Form tambah penghuni belum diimplementasikan!')">
+          <button type="button" class="btn btn-primary" onclick="openModal('modalTambahPenghuni')">
             <i class="fas fa-plus"></i> Tambah Penghuni
           </button>
         </div>
-        <form method="get" style="display: flex; gap: 8px; align-items: center;">
-          <input type="text" name="search" placeholder="Cari nama, KTP, HP..." value="<?= esc($_GET['search'] ?? '') ?>" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc; min-width: 180px;">
-          <input type="date" name="tgl_masuk" value="<?= esc($_GET['tgl_masuk'] ?? '') ?>" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc;">
-          <button type="submit" class="btn btn-outline-secondary">Reset</button>
+        <form method="get" class="filter-form" onsubmit="return false;">
+          <input type="text" name="search" placeholder="Cari nama, KTP, HP..." value="<?= esc($_GET['search'] ?? '') ?>" class="input-search" autocomplete="off">
+          <input type="date" name="tgl_masuk" value="<?= esc($_GET['tgl_masuk'] ?? '') ?>" class="input-date" onchange="this.form.submit()">
+          <button type="button" class="btn btn-outline-secondary" onclick="window.location.href=window.location.pathname">Reset</button>
         </form>
       </div>
       <!-- Show Entries Dropdown -->
-      <div class="show-entries-bar" style="margin-bottom: 12px;">
-        <form method="get" style="display: flex; align-items: center; gap: 8px;">
+      <div class="show-entries-bar">
+        <form method="get" class="entries-form">
           <label for="entries">Show</label>
-          <select id="entries" name="entries" onchange="this.form.submit()">
+          <select id="entries" name="entries" onchange="this.form.submit()" class="input-select">
             <option value="10" <?= (isset($_GET['entries']) && $_GET['entries'] == 10) ? 'selected' : '' ?>>10</option>
             <option value="25" <?= (isset($_GET['entries']) && $_GET['entries'] == 25) ? 'selected' : '' ?>>25</option>
             <option value="50" <?= (isset($_GET['entries']) && $_GET['entries'] == 50) ? 'selected' : '' ?>>50</option>
@@ -89,7 +89,7 @@
               <td><?= esc($p['tgl_keluar']) ?></td>
               <td>
                 <div class="table-actions">
-                  <a href="#" class="action-btn action-btn-edit" onclick="editPenghuni(<?= $p['id'] ?>)">Edit</a>
+                  <a href="#" class="action-btn action-btn-edit" onclick="openModal('modalEditPenghuni')">Edit</a>
                   <a href="#" class="action-btn action-btn-delete" onclick="confirmDeletePenghuni(<?= $p['id'] ?>, '<?= esc($p['nama']) ?>')">Hapus</a>
                 </div>
               </td>
@@ -104,7 +104,7 @@
         </table>
       </div>
       <!-- Pagination Bar -->
-      <div class="pagination-bar" style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <div class="pagination-bar">
         <div class="pagination-info">
           Menampilkan <?= ($total > 0) ? $start + 1 : 0 ?> sampai <?= min($start + count($pagedData), $total) ?> dari <?= $total ?> data
         </div>
@@ -134,6 +134,51 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+<!-- Modal Export -->
+<div class="modal-overlay" id="modalExportPenghuni" style="display:none;">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modalExportPenghuni')">&times;</button>
+    <div class="modal-title">Export Data Penghuni</div>
+    <div>Fitur export akan segera tersedia.</div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalExportPenghuni')">Tutup</button>
+    </div>
+  </div>
+</div>
+<!-- Modal Tambah -->
+<div class="modal-overlay" id="modalTambahPenghuni" style="display:none;">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modalTambahPenghuni')">&times;</button>
+    <div class="modal-title">Tambah Penghuni</div>
+    <form class="modal-form">
+      <input type="text" class="input-search" placeholder="Nama Penghuni" required>
+      <input type="text" class="input-search" placeholder="No KTP" required>
+      <input type="text" class="input-search" placeholder="No HP" required>
+      <input type="date" class="input-date" placeholder="Tanggal Masuk" required>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalTambahPenghuni')">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Modal Edit -->
+<div class="modal-overlay" id="modalEditPenghuni" style="display:none;">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modalEditPenghuni')">&times;</button>
+    <div class="modal-title">Edit Penghuni</div>
+    <form class="modal-form">
+      <input type="text" class="input-search" placeholder="Nama Penghuni" required>
+      <input type="text" class="input-search" placeholder="No KTP" required>
+      <input type="text" class="input-search" placeholder="No HP" required>
+      <input type="date" class="input-date" placeholder="Tanggal Masuk" required>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalEditPenghuni')">Batal</button>
+      </div>
+    </form>
   </div>
 </div>
 <?= $this->endSection() ?> 

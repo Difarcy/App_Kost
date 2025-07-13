@@ -7,33 +7,33 @@
   <div class="main-card">
     <div class="main-content">
       <!-- Toolbar: Export, Cetak, Tambah, Pencarian, Filter -->
-      <div class="filter-section" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px;">
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <button type="button" class="btn btn-success" onclick="alert('Export belum diimplementasikan!')">
+      <div class="filter-section">
+        <div class="toolbar-group">
+          <button type="button" class="btn btn-success" onclick="openModal('modalExportKamar')">
             <i class="fas fa-file-export"></i> Export
           </button>
-          <button type="button" class="btn btn-info" onclick="window.print()">
+          <button type="button" class="btn btn-info" onclick="printKamarTable()">
             <i class="fas fa-print"></i> Cetak
           </button>
-          <button type="button" class="btn btn-primary" onclick="alert('Form tambah kamar belum diimplementasikan!')">
+          <button type="button" class="btn btn-primary" onclick="openModal('modalTambahKamar')">
             <i class="fas fa-plus"></i> Tambah Kamar
           </button>
         </div>
-        <form method="get" style="display: flex; gap: 8px; align-items: center;">
-          <input type="text" name="search" placeholder="Cari nomor kamar..." value="<?= esc($_GET['search'] ?? '') ?>" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc; min-width: 180px;">
-          <select name="harga" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc;">
+        <form method="get" class="filter-form" onsubmit="return false;">
+          <input type="text" name="search" placeholder="Cari nomor kamar..." value="<?= esc($_GET['search'] ?? '') ?>" class="input-search" autocomplete="off">
+          <select name="harga" class="input-select" onchange="this.form.submit()">
             <option value="">Semua Harga</option>
             <option value="<1000000" <?= (isset($_GET['harga']) && $_GET['harga'] == '<1000000') ? 'selected' : '' ?>>Di bawah 1 juta</option>
             <option value=">=1000000" <?= (isset($_GET['harga']) && $_GET['harga'] == '>=1000000') ? 'selected' : '' ?>>1 juta ke atas</option>
           </select>
-          <button type="submit" class="btn btn-outline-secondary">Reset</button>
+          <button type="button" class="btn btn-outline-secondary" onclick="window.location.href=window.location.pathname">Reset</button>
         </form>
       </div>
       <!-- Show Entries Dropdown -->
-      <div class="show-entries-bar" style="margin-bottom: 12px;">
-        <form method="get" style="display: flex; align-items: center; gap: 8px;">
+      <div class="show-entries-bar">
+        <form method="get" class="entries-form">
           <label for="entries">Show</label>
-          <select id="entries" name="entries" onchange="this.form.submit()">
+          <select id="entries" name="entries" onchange="this.form.submit()" class="input-select">
             <option value="10" <?= (isset($_GET['entries']) && $_GET['entries'] == 10) ? 'selected' : '' ?>>10</option>
             <option value="25" <?= (isset($_GET['entries']) && $_GET['entries'] == 25) ? 'selected' : '' ?>>25</option>
             <option value="50" <?= (isset($_GET['entries']) && $_GET['entries'] == 50) ? 'selected' : '' ?>>50</option>
@@ -87,7 +87,7 @@
               <td>Rp<?= number_format($k['harga'],0,',','.') ?></td>
               <td>
                 <div class="table-actions">
-                  <a href="#" class="action-btn action-btn-edit" onclick="editKamar(<?= $k['id'] ?>)">Edit</a>
+                  <a href="#" class="action-btn action-btn-edit" onclick="openModal('modalEditKamar')">Edit</a>
                   <a href="#" class="action-btn action-btn-delete" onclick="confirmDeleteKamar(<?= $k['id'] ?>, '<?= esc($k['nomor']) ?>')">Hapus</a>
                 </div>
               </td>
@@ -102,7 +102,7 @@
         </table>
       </div>
       <!-- Pagination Bar -->
-      <div class="pagination-bar" style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <div class="pagination-bar">
         <div class="pagination-info">
           Menampilkan <?= ($total > 0) ? $start + 1 : 0 ?> sampai <?= min($start + count($pagedData), $total) ?> dari <?= $total ?> data
         </div>
@@ -132,6 +132,47 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+<!-- Modal Export -->
+<div class="modal-overlay" id="modalExportKamar" style="display:none;">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modalExportKamar')">&times;</button>
+    <div class="modal-title">Export Data Kamar</div>
+    <div>Fitur export akan segera tersedia.</div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalExportKamar')">Tutup</button>
+    </div>
+  </div>
+</div>
+<!-- Modal Tambah -->
+<div class="modal-overlay" id="modalTambahKamar" style="display:none;">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modalTambahKamar')">&times;</button>
+    <div class="modal-title">Tambah Kamar</div>
+    <form class="modal-form">
+      <input type="text" class="input-search" placeholder="Nomor Kamar" required>
+      <input type="number" class="input-search" placeholder="Harga" required>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalTambahKamar')">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Modal Edit -->
+<div class="modal-overlay" id="modalEditKamar" style="display:none;">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modalEditKamar')">&times;</button>
+    <div class="modal-title">Edit Kamar</div>
+    <form class="modal-form">
+      <input type="text" class="input-search" placeholder="Nomor Kamar" required>
+      <input type="number" class="input-search" placeholder="Harga" required>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalEditKamar')">Batal</button>
+      </div>
+    </form>
   </div>
 </div>
 <?= $this->endSection() ?> 

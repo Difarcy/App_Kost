@@ -14,7 +14,13 @@ class Tagihan extends BaseController
 
     public function index()
     {
-        $data['tagihan'] = $this->tagihanModel->findAll();
+        $db = \Config\Database::connect();
+        $builder = $db->table('tb_tagihan t')
+            ->select('t.id, t.bulan, t.jml_tagihan, p.nama as nama_penghuni, k.nomor as nomor_kamar')
+            ->join('tb_kmr_penghuni kp', 'kp.id = t.id_kmr_penghuni')
+            ->join('tb_penghuni p', 'p.id = kp.id_penghuni')
+            ->join('tb_kamar k', 'k.id = kp.id_kamar');
+        $data['tagihan'] = $builder->get()->getResultArray();
         return view('tagihan', $data);
     }
 

@@ -14,23 +14,29 @@ class Dashboard extends Controller
         if (!session()->get('user_id')) {
             return redirect()->to('/login');
         }
-        $kamarModel = new KamarModel();
-        $penghuniModel = new PenghuniModel();
-        $tagihanModel = new TagihanModel();
-        $bayarModel = new BayarModel();
-        $barangModel = new BarangModel();
+        $kamarModel = new \App\Models\KamarModel();
+        $penghuniModel = new \App\Models\PenghuniModel();
+        $tagihanModel = new \App\Models\TagihanModel();
+        $bayarModel = new \App\Models\BayarModel();
+
+        $db = \Config\Database::connect();
+        // Grafik pendapatan perbulan (6 bulan terakhir)
+        $grafik = $db->query('
+            SELECT DATE_FORMAT(t.bulan, "%b %Y") as bulan, SUM(b.jml_bayar) as total
+            FROM tb_bayar b
+            JOIN tb_tagihan t ON t.id = b.id_tagihan
+            GROUP BY YEAR(t.bulan), MONTH(t.bulan)
+            ORDER BY t.bulan DESC
+            LIMIT 6
+        ')->getResultArray();
+        $grafik = array_reverse($grafik); // urutkan dari paling lama ke terbaru
 
         $data = [
             'totalKamar' => $kamarModel->countAllResults(),
             'totalPenghuni' => $penghuniModel->countAllResults(),
             'totalTagihan' => $tagihanModel->countAllResults(),
             'totalPembayaran' => $bayarModel->countAllResults(),
-            'totalBarang' => $barangModel->countAllResults(),
-            'kamarTerbaru' => $kamarModel->orderBy('id', 'DESC')->findAll(5),
-            'penghuniTerbaru' => $penghuniModel->orderBy('id', 'DESC')->findAll(5),
-            'tagihanTerbaru' => $tagihanModel->orderBy('id', 'DESC')->findAll(5),
-            'pembayaranTerbaru' => $bayarModel->orderBy('id', 'DESC')->findAll(5),
-            'barangTerbaru' => $barangModel->orderBy('id', 'DESC')->findAll(5),
+            'grafikPendapatan' => $grafik,
         ];
         return view('dashboard', $data);
     }

@@ -94,10 +94,11 @@ body {
 }
 
 .widget-value {
-  font-size: 1.3rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  margin-left: 12px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #222;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
 }
 
 .widget-blue {

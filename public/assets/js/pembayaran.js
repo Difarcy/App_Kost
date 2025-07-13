@@ -204,7 +204,84 @@ function fetchAndRenderPembayaran() {
     .then(data => renderPembayaranTable(data));
 }
 
+// Print only table and title (hide 'Aksi' column)
+window.printPembayaranTable = function() {
+  const style = document.createElement('style');
+  style.id = 'print-style-pembayaran';
+  style.innerHTML = `
+    @media print {
+      body * { visibility: hidden !important; }
+      .main-page-title, .table-container, .main-page-title *,.table-container * { visibility: visible !important; }
+      .main-page-title { display: block !important; margin-bottom: 16px !important; }
+      .table-container { position: absolute !important; left: 0; top: 40px; width: 100vw !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; border: none !important; }
+      .data-table { width: 100% !important; border-collapse: collapse !important; }
+      .data-table th, .data-table td { border: 1px solid #000 !important; padding: 8px !important; text-align: left !important; }
+      .data-table th { background-color: #f0f0f0 !important; font-weight: bold !important; }
+      .data-table th:last-child, .data-table td:last-child { display: none !important; }
+    }
+  `;
+  document.head.appendChild(style);
+  window.print();
+  setTimeout(function() {
+    const printStyle = document.getElementById('print-style-pembayaran');
+    if (printStyle) printStyle.remove();
+  }, 1000);
+};
+
+window.editPembayaran = function(id) {
+  // TODO: fetch data pembayaran by id dan isi form modalEditPembayaran
+  openModal('modalEditPembayaran');
+};
+
+function confirmDeletePembayaran(id) {
+  if (confirm('Yakin ingin menghapus pembayaran?')) {
+    const currentPath = window.location.pathname;
+    const prefix = currentPath.includes('/admin/') ? 'admin/' : (currentPath.includes('/user/') ? 'user/' : '');
+    fetch(`/${prefix}pembayaran/delete/${id}`, { 
+      method: 'POST',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Pembayaran berhasil dihapus.');
+          fetchAndRenderPembayaran();
+        } else {
+          alert('Maaf, pembayaran gagal dihapus. Silakan coba lagi.');
+        }
+      });
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+  // Tombol Reset
+  const resetBtn = document.querySelector('.btn-outline-secondary');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function() {
+      window.location.href = window.location.pathname;
+    });
+  }
+  // Tombol Print
+  const printBtn = document.querySelector('.btn-info');
+  if (printBtn) {
+    printBtn.addEventListener('click', function() {
+      window.print();
+    });
+  }
+  // Tombol Export
+  const exportBtn = document.querySelector('.btn-success');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', function() {
+      // Hapus semua alert yang tidak diperlukan
+    });
+  }
+  // Tombol Tambah
+  const tambahBtn = document.querySelector('.btn-primary');
+  if (tambahBtn) {
+    tambahBtn.addEventListener('click', function() {
+      // Hapus semua alert yang tidak diperlukan
+    });
+  }
   const searchInput = document.querySelector('input[name="search"]');
   const jabatanDropdown = document.querySelector('select[name="jabatan"]');
   const statusDropdown = document.querySelector('select[name="status"]');

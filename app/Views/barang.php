@@ -7,33 +7,33 @@
   <div class="main-card">
     <div class="main-content">
       <!-- Toolbar: Export, Cetak, Tambah, Pencarian, Filter -->
-      <div class="filter-section" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px;">
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <button type="button" class="btn btn-success" onclick="alert('Export belum diimplementasikan!')">
+      <div class="filter-section">
+        <div class="toolbar-group">
+          <button type="button" class="btn btn-success" onclick="exportBarang()">
             <i class="fas fa-file-export"></i> Export
-          </button>
-          <button type="button" class="btn btn-info" onclick="window.print()">
-            <i class="fas fa-print"></i> Cetak
-          </button>
-          <button type="button" class="btn btn-primary" onclick="alert('Form tambah barang belum diimplementasikan!')">
+            </button>
+          <button type="button" class="btn btn-info" onclick="printBarangTable()">
+              <i class="fas fa-print"></i> Cetak
+            </button>
+          <button type="button" class="btn btn-primary" onclick="showAddBarangModal()">
             <i class="fas fa-plus"></i> Tambah Barang
-          </button>
+            </button>
         </div>
-        <form method="get" style="display: flex; gap: 8px; align-items: center;">
-          <input type="text" name="search" placeholder="Cari nama barang..." value="<?= esc($_GET['search'] ?? '') ?>" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc; min-width: 180px;">
-          <select name="harga" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc;">
+        <form method="get" class="filter-form" onsubmit="return false;">
+          <input type="text" name="search" placeholder="Cari nama barang..." value="<?= esc($_GET['search'] ?? '') ?>" class="input-search" autocomplete="off">
+          <select name="harga" class="input-select" onchange="this.form.submit()">
             <option value="">Semua Harga</option>
             <option value="<100000" <?= (isset($_GET['harga']) && $_GET['harga'] == '<100000') ? 'selected' : '' ?>>Di bawah 100 ribu</option>
             <option value=">=100000" <?= (isset($_GET['harga']) && $_GET['harga'] == '>=100000') ? 'selected' : '' ?>>100 ribu ke atas</option>
           </select>
-          <button type="submit" class="btn btn-outline-secondary">Reset</button>
+          <button type="button" class="btn btn-outline-secondary" onclick="window.location.href=window.location.pathname">Reset</button>
         </form>
       </div>
       <!-- Show Entries Dropdown -->
-      <div class="show-entries-bar" style="margin-bottom: 12px;">
-        <form method="get" style="display: flex; align-items: center; gap: 8px;">
+      <div class="show-entries-bar">
+        <form method="get" class="entries-form">
           <label for="entries">Show</label>
-          <select id="entries" name="entries" onchange="this.form.submit()">
+          <select id="entries" name="entries" onchange="this.form.submit()" class="input-select">
             <option value="10" <?= (isset($_GET['entries']) && $_GET['entries'] == 10) ? 'selected' : '' ?>>10</option>
             <option value="25" <?= (isset($_GET['entries']) && $_GET['entries'] == 25) ? 'selected' : '' ?>>25</option>
             <option value="50" <?= (isset($_GET['entries']) && $_GET['entries'] == 50) ? 'selected' : '' ?>>50</option>
@@ -49,9 +49,9 @@
           <thead>
             <tr>
               <th>No</th>
-              <th>Nama Barang</th>
+                <th>Nama Barang</th>
               <th>Harga</th>
-              <th>Aksi</th>
+                <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -102,7 +102,7 @@
         </table>
       </div>
       <!-- Pagination Bar -->
-      <div class="pagination-bar" style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <div class="pagination-bar">
         <div class="pagination-info">
           Menampilkan <?= ($total > 0) ? $start + 1 : 0 ?> sampai <?= min($start + count($pagedData), $total) ?> dari <?= $total ?> data
         </div>
